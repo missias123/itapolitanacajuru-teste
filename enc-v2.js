@@ -531,16 +531,16 @@ function qtdPickle(sabor, delta) {
   
   // TRAVA DE MÃO DE FERRO: Bloqueio absoluto em 25 unidades por sabor
   if (nova > LIMITE_POR_SABOR) {
-    nova = LIMITE_POR_SABOR; // Força o valor a ser exatamente 25
     const totalGlobal = totalPickleGlobal();
     const faltam = Math.max(0, MIN_PICOLES - totalGlobal);
     showToast(`Total acumulado POR SABOR : ${LIMITE_POR_SABOR} picolés. Faltam ${faltam} para liberar o carrinho.`, 'alerta');
+    return; // INTERROMPE AQUI, não deixa subir para 26
   }
 
   // Verificar limite global de 250
   const totalGlobalAntigo = totalPickleGlobal();
   const diff = nova - qtdAnterior;
-  if (totalGlobalAntigo + diff > MAX_PICOLES) {
+  if (diff > 0 && totalGlobalAntigo + diff > MAX_PICOLES) {
     showToast(`⚠️ Máximo ${MAX_PICOLES} picolés no total. Você já tem ${totalGlobalAntigo}.`, 'alerta');
     return;
   }
