@@ -482,9 +482,9 @@ function confirmarCaixa() {
 }
 
 // ---- MODAL PICOLÉ (REPARO PERFEITO) ----
-const MIN_PICOLES = 100;
-const MAX_PICOLES = 75; // Ajustado para baixar até 75 por pedido no carrinho conforme solicitado
-const LIMITE_POR_SABOR = 25;
+const MIN_PICOLES = 1; // Ajustado para permitir pedidos a partir de 1 unidade (varejo/atacado)
+const MAX_PICOLES = 75; // Limite de 75 picolés POR CARRINHO INDIVIDUAL
+const LIMITE_POR_SABOR = 25; // Limite de 25 unidades POR SABOR INDIVIDUAL
 
 function abrirModalPicolé(id, originEl) {
   const p = PRODUTOS.picoles.find(x => x.id === id);
@@ -605,23 +605,17 @@ function atualizarTotalPickle() {
   }
   
   const btn = document.getElementById('btn-add-picoles');
-  const barraProgresso = document.querySelector('.barra-progresso-picolé'); // Se existir no HTML
   
-  // Regras de validação do botão de adicionar
+  // Regras de validação do botão de adicionar (Limite de 75 por carrinho)
   if (btn) {
     if (totalGlobal === 0) {
       btn.disabled = true;
-      btn.textContent = `🍭 Selecione ao menos ${MIN_PICOLES} picolés`;
+      btn.textContent = `🍭 Selecione picolés (Máx. ${MAX_PICOLES})`;
       btn.style.background = '#d1d5db';
       btn.style.color = '#6b7280';
-    } else if (totalGlobal < MIN_PICOLES) {
-      btn.disabled = true;
-      btn.textContent = `🔒 Faltam ${MIN_PICOLES - totalGlobal} picolés (Total: ${totalGlobal})`;
-      btn.style.background = '#fbbf24';
-      btn.style.color = '#000';
     } else if (totalGlobal > MAX_PICOLES) {
       btn.disabled = true;
-      btn.textContent = `⚠️ Máximo ${MAX_PICOLES} picolés atingido (Total: ${totalGlobal})`;
+      btn.textContent = `⚠️ Limite de ${MAX_PICOLES} picolés por carrinho atingido!`;
       btn.style.background = '#f87171';
       btn.style.color = '#fff';
     } else {
@@ -632,15 +626,20 @@ function atualizarTotalPickle() {
     }
   }
 
-  // Bloquear todos os botões de "+" se o total global atingir 250
+  // Bloquear todos os botões de "+" se o total global atingir 75 OU o sabor atingir 25
   const btnsPlus = document.querySelectorAll('.btn-qty:last-child');
   btnsPlus.forEach(b => {
     const row = b.closest('.picolé-row');
     if (row) {
       const sabor = row.querySelector('.picolé-sabor-nome').textContent;
       const qtdSabor = selecoesPickle[sabor] || 0;
-      // Bloqueia se o total global for >= 250 OU se o sabor já tiver 25
-      b.disabled = (totalGlobal >= MAX_PICOLES && qtdSabor === 0) || (qtdSabor >= LIMITE_POR_SABOR);
+      // Bloqueia se o total global for >= 75 OU se o sabor já tiver 25
+      const atingiuLimiteGlobal = (totalGlobal >= MAX_PICOLES);
+      const atingiuLimiteSabor = (qtdSabor >= LIMITE_POR_SABOR);
+      
+      b.disabled = atingiuLimiteGlobal || atingiuLimiteSabor;
+      b.style.opacity = (atingiuLimiteGlobal || atingiuLimiteSabor) ? '0.3' : '1';
+      b.style.cursor = (atingiuLimiteGlobal || atingiuLimiteSabor) ? 'not-allowed' : 'pointer';
     }
   });
 }  // Atualizar avisos visuais
