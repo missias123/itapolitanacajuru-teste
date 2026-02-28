@@ -560,22 +560,29 @@ function qtdPickle(sabor, delta) {
     selecoesPickleGlobal[chave] = nova; 
   }
 
-  // Atualizar contador visual e estado dos botões
+  // Atualizar contador visual e estado dos botões (TRAVA FÍSICA)
   const el = document.getElementById(`pqty-${sabor.replace(/\s+/g,'_')}`);
   if (el) {
     el.textContent = nova;
     // Feedback visual
-    el.style.color = (nova === 25) ? '#22c55e' : '#ef4444';
-    el.style.fontWeight = (nova === 25) ? '900' : 'normal';
-    setTimeout(() => { el.style.color = ''; }, 400);
+    el.style.color = (nova === 25) ? '#22c55e' : (nova === 0 ? '#6b7280' : '#1565C0');
+    el.style.fontWeight = (nova === 25) ? '900' : '700';
     
-    // Bloquear/Desbloquear botões visualmente (opcional, via CSS ou JS)
+    // Bloquear/Desbloquear botões visualmente e fisicamente
     const row = el.closest('.picolé-row');
     if (row) {
       const btnPlus = row.querySelector('button:last-child');
       const btnMinus = row.querySelector('button:first-child');
-      if (btnPlus) btnPlus.disabled = (nova === 25);
-      if (btnMinus) btnMinus.disabled = (nova === 0);
+      if (btnPlus) {
+        btnPlus.disabled = (nova >= LIMITE_POR_SABOR);
+        btnPlus.style.opacity = (nova >= LIMITE_POR_SABOR) ? '0.3' : '1';
+        btnPlus.style.cursor = (nova >= LIMITE_POR_SABOR) ? 'not-allowed' : 'pointer';
+      }
+      if (btnMinus) {
+        btnMinus.disabled = (nova <= 0);
+        btnMinus.style.opacity = (nova <= 0) ? '0.3' : '1';
+        btnMinus.style.cursor = (nova <= 0) ? 'not-allowed' : 'pointer';
+      }
     }
   }
   
