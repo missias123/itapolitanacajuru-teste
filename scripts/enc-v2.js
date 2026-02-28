@@ -486,13 +486,26 @@ function qtdPickle(sabor, delta) {
   if (!selecoesPickle[sabor]) selecoesPickle[sabor] = 0;
   const nova = selecoesPickle[sabor] + delta;
   if (nova < 0) return;
-  // Verificar limite global de 250
+
+  // TRAVA 1: Limite de 25 unidades por sabor
+  if (delta > 0 && nova > 25) {
+    showToast(`⚠️ Limite de 25 unidades por sabor atingido!`, 'alerta');
+    // Forçar o valor a 25 caso algo tenha passado
+    selecoesPickle[sabor] = 25;
+    const elFix = document.getElementById(`pqty-${sabor.replace(/\s+/g,'_')}`);
+    if (elFix) elFix.textContent = 25;
+    atualizarTotalPickle();
+    return;
+  }
+
+  // TRAVA 2: Verificar limite global de 250
   const totalGlobal = totalPickleGlobal();
   const diff = nova - (selecoesPickle[sabor] || 0);
   if (totalGlobal + diff > MAX_PICOLES) {
     showToast(`⚠️ Máximo ${MAX_PICOLES} picolés no total. Você já tem ${totalGlobal}.`, 'alerta');
     return;
   }
+
   selecoesPickle[sabor] = nova;
   // Atualizar o global
   const chave = picoleAtual.id + '::' + sabor;
