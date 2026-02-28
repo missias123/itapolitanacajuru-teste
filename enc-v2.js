@@ -529,10 +529,10 @@ function qtdPickle(sabor, delta) {
   let nova = qtdAnterior + delta;
   if (nova < 0) nova = 0;
   
-  // Trava rigorosa em 25 unidades por sabor
+  // TRAVA DE MÃO DE FERRO: Bloqueio absoluto em 25 unidades por sabor
   if (nova > LIMITE_POR_SABOR) {
+    nova = LIMITE_POR_SABOR; // Força o valor a ser exatamente 25
     showToast(`⚠️ Limite de ${LIMITE_POR_SABOR} unidades por sabor atingido`, 'alerta');
-    return;
   }
 
   // Verificar limite global de 250
