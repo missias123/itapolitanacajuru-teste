@@ -532,7 +532,9 @@ function qtdPickle(sabor, delta) {
   // TRAVA DE MÃO DE FERRO: Bloqueio absoluto em 25 unidades por sabor
   if (nova > LIMITE_POR_SABOR) {
     nova = LIMITE_POR_SABOR; // Força o valor a ser exatamente 25
-    showToast(`⚠️ Limite de ${LIMITE_POR_SABOR} unidades por sabor atingido`, 'alerta');
+    const totalGlobal = totalPickleGlobal();
+    const faltam = Math.max(0, MIN_PICOLES - totalGlobal);
+    showToast(`Total acumulado POR SABOR : ${LIMITE_POR_SABOR} picolés. Faltam ${faltam} para liberar o carrinho.`, 'alerta');
   }
 
   // Verificar limite global de 250
