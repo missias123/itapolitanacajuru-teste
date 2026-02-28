@@ -680,31 +680,32 @@ function atualizarTotalPickle() {
 
 function confirmarPickle() {
   const totalGlobal = totalPickleGlobal();
+  
+  // Validação rigorosa de limites (100 a 250)
   if (totalGlobal < MIN_PICOLES) { 
     showToast(`⚠️ Mínimo ${MIN_PICOLES} picolés para atacado. Você tem ${totalGlobal}.`, 'alerta'); 
     return; 
   }
   if (totalGlobal > MAX_PICOLES) { 
-    showToast(`⚠️ Máximo ${MAX_PICOLES} picolés permitido.`, 'alerta'); 
+    showToast(`⚠️ Máximo ${MAX_PICOLES} picolés permitido. Você tem ${totalGlobal}.`, 'alerta'); 
     return; 
   }
 
-  // Sincronizar seleções globais com o carrinho
+  // Sincronizar seleções globais com o carrinho de forma limpa
+  // Primeiro, removemos picolés antigos do carrinho para evitar duplicações ou erros de contagem
+  carrinho = carrinho.filter(item => item.tipo !== 'picolé');
+
+  // Adicionamos as novas seleções validadas (1 a 25 por sabor)
   Object.entries(selecoesPickleGlobal).forEach(([chave, qtd]) => {
     if (qtd <= 0) return;
+    
     const [tipoId, ...saborParts] = chave.split('::');
     const sabor = saborParts.join('::');
     const p = PRODUTOS.picoles.find(x => x.id === tipoId);
-    if (!p) return;
     
-    const itemId = tipoId + '::' + sabor;
-    const ex = carrinho.find(c => c.tipo === 'picolé' && c.id === itemId);
-    
-    if (ex) { 
-      ex.quantidade = qtd; 
-    } else {
+    if (p) {
       carrinho.push({
-        id: itemId,
+        id: tipoId + '::' + sabor,
         nome: sabor,
         nomeTipo: p.nome,
         preco: p.precoAtacado,
@@ -714,12 +715,23 @@ function confirmarPickle() {
     }
   });
 
-  // Limpar estados temporários
+  // Limpar estados temporários do modal
   selecoesPickleGlobal = {};
   selecoesPickle = {};
+  
+  // Fechar modal e atualizar interface
   fecharModal('modal-picolé');
   atualizarBotaoCarrinho();
-  showToast(`✅ ${totalGlobal} picolés adicionados ao carrinho!`, 'sucesso');
+  
+  // Feedback visual de sucesso
+  showToast(`✅ ${totalGlobal} picolés adicionados ao carrinho com sucesso!`, 'sucesso');
+  
+  // Rolar suavemente para o botão do carrinho para guiar o utilizador
+  const btnCarrinho = document.getElementById('btn-carrinho');
+  if (btnCarrinho) {
+    btnCarrinho.classList.add('pulse-animation');
+    setTimeout(() => btnCarrinho.classList.remove('pulse-animation'), 2000);
+  }
 }
 
 // ---- CARRINHO ----
