@@ -597,7 +597,7 @@ function atualizarTotalPickle() {
   }
   
   const btn = document.getElementById('btn-add-picoles');
-  const aviso = document.getElementById('aviso-minimo-picolé');
+  const barraProgresso = document.querySelector('.barra-progresso-picolé'); // Se existir no HTML
   
   // Regras de validação do botão de adicionar
   if (btn) {
@@ -605,22 +605,37 @@ function atualizarTotalPickle() {
       btn.disabled = true;
       btn.textContent = `🍭 Selecione ao menos ${MIN_PICOLES} picolés`;
       btn.style.background = '#d1d5db';
+      btn.style.color = '#6b7280';
     } else if (totalGlobal < MIN_PICOLES) {
       btn.disabled = true;
       btn.textContent = `🔒 Faltam ${MIN_PICOLES - totalGlobal} picolés (Total: ${totalGlobal})`;
       btn.style.background = '#fbbf24';
+      btn.style.color = '#000';
     } else if (totalGlobal > MAX_PICOLES) {
       btn.disabled = true;
-      btn.textContent = `⚠️ Máximo ${MAX_PICOLES} picolés atingido`;
+      btn.textContent = `⚠️ Máximo ${MAX_PICOLES} picolés atingido (Total: ${totalGlobal})`;
       btn.style.background = '#f87171';
+      btn.style.color = '#fff';
     } else {
       btn.disabled = false;
       btn.textContent = `✅ Adicionar ${totalGlobal} picolés ao carrinho`;
       btn.style.background = '#22c55e';
+      btn.style.color = '#fff';
     }
   }
 
-  // Atualizar avisos visuais
+  // Bloquear todos os botões de "+" se o total global atingir 250
+  const btnsPlus = document.querySelectorAll('.btn-qty:last-child');
+  btnsPlus.forEach(b => {
+    const row = b.closest('.picolé-row');
+    if (row) {
+      const sabor = row.querySelector('.picolé-sabor-nome').textContent;
+      const qtdSabor = selecoesPickle[sabor] || 0;
+      // Bloqueia se o total global for >= 250 OU se o sabor já tiver 25
+      b.disabled = (totalGlobal >= MAX_PICOLES && qtdSabor === 0) || (qtdSabor >= LIMITE_POR_SABOR);
+    }
+  });
+}  // Atualizar avisos visuais
   if (aviso) {
     if (totalGlobal > 0 && totalGlobal < MIN_PICOLES) {
       aviso.style.display = 'block';
