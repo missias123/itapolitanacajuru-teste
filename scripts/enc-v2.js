@@ -489,7 +489,7 @@ function qtdPickle(sabor, delta) {
 
   // TRAVA 1: Limite de 25 unidades por sabor
   if (delta > 0 && nova > 25) {
-    showToast(`⚠️ Limite de 25 unidades por sabor atingido!`, 'alerta');
+    showToast(`⚠️ Limite excedido de sabores!`, 'alerta');
     // Forçar o valor a 25 caso algo tenha passado
     selecoesPickle[sabor] = 25;
     const elFix = document.getElementById(`pqty-${sabor.replace(/\s+/g,'_')}`);
