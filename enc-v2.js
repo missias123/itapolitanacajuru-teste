@@ -481,19 +481,25 @@ function abrirModalPicolé(id, originEl) {
 function qtdPickle(sabor, delta) {
   if (!selecoesPickle[sabor]) selecoesPickle[sabor] = 0;
   
+  const qtdAnterior = selecoesPickle[sabor];
+  
   // Lógica de 25 unidades por clique
-  let nova = selecoesPickle[sabor] + delta;
+  let nova = qtdAnterior + delta;
   if (nova < 0) nova = 0;
   
   // Bloqueio de limite por sabor (25 unidades)
   if (nova > LIMITE_POR_SABOR) {
     showToast(`⚠️ Limite por sabor excedido (${LIMITE_POR_SABOR} un.)`, 'alerta');
+    // Efeito visual de erro
+    const el = document.getElementById(`pqty-${sabor.replace(/\s+/g,'_')}`);
+    if (el) el.style.animation = 'shake 0.3s';
+    setTimeout(() => { if (el) el.style.animation = ''; }, 300);
     return;
   }
 
   // Verificar limite global de 250
   const totalGlobalAntigo = totalPickleGlobal();
-  const diff = nova - selecoesPickle[sabor];
+  const diff = nova - qtdAnterior;
   if (totalGlobalAntigo + diff > MAX_PICOLES) {
     showToast(`⚠️ Máximo ${MAX_PICOLES} picolés no total. Você já tem ${totalGlobalAntigo}.`, 'alerta');
     return;
@@ -505,6 +511,7 @@ function qtdPickle(sabor, delta) {
     return;
   }
 
+  // Atualizar seleção
   selecoesPickle[sabor] = nova;
   
   // Atualizar o global de forma sincronizada
@@ -515,9 +522,22 @@ function qtdPickle(sabor, delta) {
     selecoesPickleGlobal[chave] = nova; 
   }
 
-  // Atualizar contador visual individual
+  // Atualizar contador visual com feedback
   const el = document.getElementById(`pqty-${sabor.replace(/\s+/g,'_')}`);
-  if (el) el.textContent = nova;
+  if (el) {
+    el.textContent = nova;
+    // Feedback visual: mudar cor temporariamente
+    if (delta > 0) {
+      el.style.color = '#22c55e';
+      el.style.fontWeight = '900';
+    } else if (delta < 0) {
+      el.style.color = '#ef4444';
+    }
+    setTimeout(() => {
+      el.style.color = '';
+      el.style.fontWeight = '';
+    }, 400);
+  }
   
   // Atualizar totais e barra de progresso
   atualizarTotalPickle();
@@ -530,7 +550,12 @@ function totalPickleGlobal() {
 function atualizarTotalPickle() {
   const totalGlobal = totalPickleGlobal();
   const el = document.getElementById('total-picoles');
-  if (el) el.textContent = totalGlobal;
+  if (el) {
+    el.textContent = totalGlobal;
+    // Efeito visual quando o total muda
+    el.style.transform = 'scale(1.1)';
+    setTimeout(() => { el.style.transform = 'scale(1)'; }, 200);
+  }
   
   const btn = document.getElementById('btn-add-picoles');
   const aviso = document.getElementById('aviso-minimo-picolé');
@@ -540,15 +565,19 @@ function atualizarTotalPickle() {
     if (totalGlobal === 0) {
       btn.disabled = true;
       btn.textContent = `🍭 Selecione ao menos ${MIN_PICOLES} picolés`;
+      btn.style.background = '#d1d5db';
     } else if (totalGlobal < MIN_PICOLES) {
       btn.disabled = true;
       btn.textContent = `🔒 Faltam ${MIN_PICOLES - totalGlobal} picolés (Total: ${totalGlobal})`;
+      btn.style.background = '#fbbf24';
     } else if (totalGlobal > MAX_PICOLES) {
       btn.disabled = true;
       btn.textContent = `⚠️ Máximo ${MAX_PICOLES} picolés atingido`;
+      btn.style.background = '#f87171';
     } else {
       btn.disabled = false;
       btn.textContent = `✅ Adicionar ${totalGlobal} picolés ao carrinho`;
+      btn.style.background = '#22c55e';
     }
   }
 
