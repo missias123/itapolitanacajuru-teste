@@ -414,18 +414,49 @@ function toggleSabor(sabor, el) {
   if (idx >= 0) {
     saboresSelecionados.splice(idx, 1);
     el.classList.remove('selecionado');
+    // Feedback visual: remover com cor vermelha
+    el.style.background = '#fee2e2';
+    setTimeout(() => { el.style.background = ''; }, 300);
+    showToast(`❌ ${sabor} removido`, 'info');
   } else {
     if (saboresSelecionados.length >= produtoAtual.maxSabores) {
-      showToast(`Máximo ${produtoAtual.maxSabores} sabores!`, 'alerta');
+      showToast(`⚠️ Máximo ${produtoAtual.maxSabores} sabores permitidos!`, 'alerta');
+      // Efeito de erro no elemento
+      el.style.animation = 'shake 0.3s';
+      setTimeout(() => { el.style.animation = ''; }, 300);
       return;
     }
     saboresSelecionados.push(sabor);
     el.classList.add('selecionado');
+    // Feedback visual: adicionar com cor verde
+    el.style.background = '#dcfce7';
+    setTimeout(() => { el.style.background = ''; }, 300);
+    showToast(`✅ ${sabor} selecionado (${saboresSelecionados.length}/${produtoAtual.maxSabores})`, 'sucesso');
+  }
+  // Atualizar contador visual
+  atualizarContadorSabores();
+}
+
+function atualizarContadorSabores() {
+  const contador = document.getElementById('sabores-selecionados-count');
+  if (contador) {
+    contador.textContent = saboresSelecionados.length;
+    // Feedback visual: mudar cor baseado no progresso
+    if (saboresSelecionados.length === 0) {
+      contador.style.color = '#9ca3af';
+    } else if (saboresSelecionados.length < produtoAtual.maxSabores) {
+      contador.style.color = '#f59e0b';
+    } else {
+      contador.style.color = '#22c55e';
+    }
   }
 }
 
 function confirmarCaixa() {
-  if (saboresSelecionados.length === 0) { showToast('Escolha ao menos 1 sabor!', 'alerta'); return; }
+  if (saboresSelecionados.length === 0) { 
+    showToast('⚠️ Escolha ao menos 1 sabor!', 'alerta'); 
+    return; 
+  }
   const item = {
     id: produtoAtual.id + '_' + Date.now(),
     nome: produtoAtual.nome,
@@ -435,8 +466,19 @@ function confirmarCaixa() {
     tipo: produtoAtual.id.startsWith('cx') ? 'caixa' : 'torta'
   };
   addCarrinho(item);
+  // Feedback visual de sucesso
+  const btn = document.getElementById('btn-confirmar-caixa');
+  if (btn) {
+    btn.style.background = '#22c55e';
+    btn.textContent = '✅ Adicionado!';
+    setTimeout(() => {
+      btn.style.background = '';
+      btn.textContent = '✅ Confirmar Seleção';
+    }, 1500);
+  }
   fecharModal('modal-caixa');
-  showToast('✅ Adicionado ao carrinho!', 'sucesso');
+  showToast(`✅ ${saboresSelecionados.length} sabor(es) adicionado(s) ao carrinho!`, 'sucesso');
+  saboresSelecionados = [];
 }
 
 // ---- MODAL PICOLÉ (REPARO PERFEITO) ----
@@ -483,17 +525,12 @@ function qtdPickle(sabor, delta) {
   
   const qtdAnterior = selecoesPickle[sabor];
   
-  // Lógica de 25 unidades por clique
-  let nova = qtdAnterior + delta;
-  if (nova < 0) nova = 0;
+  // Lógica de 25 unidades por clique (Salto Direto: 0 ou 25)
+  let nova = (delta > 0) ? 25 : 0;
   
-  // Bloqueio de limite por sabor (25 unidades)
-  if (nova > LIMITE_POR_SABOR) {
-    showToast(`⚠️ Limite por sabor excedido (${LIMITE_POR_SABOR} un.)`, 'alerta');
-    // Efeito visual de erro
-    const el = document.getElementById(`pqty-${sabor.replace(/\s+/g,'_')}`);
-    if (el) el.style.animation = 'shake 0.3s';
-    setTimeout(() => { if (el) el.style.animation = ''; }, 300);
+  // Se já estiver em 25 e tentar somar, bloqueia
+  if (delta > 0 && qtdAnterior >= LIMITE_POR_SABOR) {
+    showToast(`⚠️ Limite por sabor atingido (${LIMITE_POR_SABOR} un.)`, 'alerta');
     return;
   }
 
@@ -522,21 +559,23 @@ function qtdPickle(sabor, delta) {
     selecoesPickleGlobal[chave] = nova; 
   }
 
-  // Atualizar contador visual com feedback
+  // Atualizar contador visual e estado dos botões
   const el = document.getElementById(`pqty-${sabor.replace(/\s+/g,'_')}`);
   if (el) {
     el.textContent = nova;
-    // Feedback visual: mudar cor temporariamente
-    if (delta > 0) {
-      el.style.color = '#22c55e';
-      el.style.fontWeight = '900';
-    } else if (delta < 0) {
-      el.style.color = '#ef4444';
+    // Feedback visual
+    el.style.color = (nova === 25) ? '#22c55e' : '#ef4444';
+    el.style.fontWeight = (nova === 25) ? '900' : 'normal';
+    setTimeout(() => { el.style.color = ''; }, 400);
+    
+    // Bloquear/Desbloquear botões visualmente (opcional, via CSS ou JS)
+    const row = el.closest('.picolé-row');
+    if (row) {
+      const btnPlus = row.querySelector('button:last-child');
+      const btnMinus = row.querySelector('button:first-child');
+      if (btnPlus) btnPlus.disabled = (nova === 25);
+      if (btnMinus) btnMinus.disabled = (nova === 0);
     }
-    setTimeout(() => {
-      el.style.color = '';
-      el.style.fontWeight = '';
-    }, 400);
   }
   
   // Atualizar totais e barra de progresso
