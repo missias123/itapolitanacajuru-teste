@@ -993,14 +993,29 @@ function _concluirPedido(nome, tel, end, numPedido, dataFormatada, _resetBtn) {
   // que o usuário saia da página ao abrir o WhatsApp
   const caixas = getCaixasEncomenda();
   const tortas = getTortasEncomenda();
+  const estoquePicoles = typeof getEstoquePickles === 'function' ? getEstoquePickles() : JSON.parse(localStorage.getItem('itap_estoque_picoles') || '{}');
+
   carrinho.forEach(item => {
+    // Baixa de Caixas
     const cx = caixas.find(c => c.id === item.id);
     if (cx && cx.estoque > 0) { cx.estoque = Math.max(0, cx.estoque - item.quantidade); }
+    
+    // Baixa de Tortas
     const tr = tortas.find(t => t.id === item.id);
     if (tr && tr.estoque > 0) { tr.estoque = Math.max(0, tr.estoque - item.quantidade); }
+
+    // BAIXA DE PICOLÉS (POR SABOR)
+    if (item.tipo === 'picolé') {
+      const sabor = item.nome; // O nome do item no carrinho de picolé é o sabor
+      if (estoquePicoles[sabor] !== undefined) {
+        estoquePicoles[sabor] = Math.max(0, estoquePicoles[sabor] - item.quantidade);
+      }
+    }
   });
+
   localStorage.setItem('itap_caixas_enc', JSON.stringify(caixas));
   localStorage.setItem('itap_tortas_enc', JSON.stringify(tortas));
+  localStorage.setItem('itap_estoque_picoles', JSON.stringify(estoquePicoles));
   // Esvaziar carrinho imediatamente
   carrinho.length = 0;
   atualizarBotaoCarrinho();
