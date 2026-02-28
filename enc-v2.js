@@ -483,7 +483,7 @@ function confirmarCaixa() {
 
 // ---- MODAL PICOLÉ (REPARO PERFEITO) ----
 const MIN_PICOLES = 100;
-const MAX_PICOLES = 250;
+const MAX_PICOLES = 75; // Ajustado para baixar até 75 por pedido no carrinho conforme solicitado
 const LIMITE_POR_SABOR = 25;
 
 function abrirModalPicolé(id, originEl) {
@@ -687,7 +687,7 @@ function confirmarPickle() {
     return; 
   }
   if (totalGlobal > MAX_PICOLES) { 
-    showToast(`⚠️ Máximo ${MAX_PICOLES} picolés permitido. Você tem ${totalGlobal}.`, 'alerta'); 
+    showToast(`⚠️ O carrinho só permite baixar até ${MAX_PICOLES} picolés por pedido. Você tem ${totalGlobal}.`, 'alerta'); 
     return; 
   }
 
