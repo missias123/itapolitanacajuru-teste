@@ -509,9 +509,9 @@ function abrirModalPicolé(id, originEl) {
     <div class="picolé-row">
       <span class="picolé-sabor-nome">${s}</span>
       <div class="qty-ctrl">
-        <button class="btn-qty" onclick="qtdPickle('${s}', -25)">−</button>
+        <button class="btn-qty" onclick="qtdPickle('${s}', -1)">−</button>
         <span class="qty-val" id="pqty-${s.replace(/\s+/g,'_')}">${qtdAtual}</span>
-        <button class="btn-qty" onclick="qtdPickle('${s}', 25)">+</button>
+        <button class="btn-qty" onclick="qtdPickle('${s}', 1)">+</button>
       </div>
     </div>`;
   }).join('');
@@ -525,12 +525,13 @@ function qtdPickle(sabor, delta) {
   
   const qtdAnterior = selecoesPickle[sabor];
   
-  // Lógica de 25 unidades por clique (Salto Direto: 0 ou 25)
-  let nova = (delta > 0) ? 25 : 0;
+  // Lógica de 1 em 1 unidade por clique
+  let nova = qtdAnterior + delta;
+  if (nova < 0) nova = 0;
   
-  // Se já estiver em 25 e tentar somar, bloqueia
-  if (delta > 0 && qtdAnterior >= LIMITE_POR_SABOR) {
-    showToast(`⚠️ Limite por sabor atingido (${LIMITE_POR_SABOR} un.)`, 'alerta');
+  // Trava rigorosa em 25 unidades por sabor
+  if (nova > LIMITE_POR_SABOR) {
+    showToast(`⚠️ Limite de ${LIMITE_POR_SABOR} unidades por sabor atingido`, 'alerta');
     return;
   }
 
