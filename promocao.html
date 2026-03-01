@@ -1,6 +1,4 @@
 <!DOCTYPE html>
-<!-- Cache Buster: 
-<!-- Cache Buster: 
 <!--
   ╔══════════════════════════════════════════════════════════════╗
   ║         SORVETERIA ITAPOLITANA CAJURU — SITE OFICIAL         ║
@@ -202,7 +200,7 @@ footer strong{color:#fff}
 
 <script>
 // ── URL DO JSON DE PROMOÇÃO (GitHub raw) ─────────────────────────────────────
-var PROMO_JSON_URL = 'https://raw.githubusercontent.com/missias123/itapolitanacajuru-teste/main/dados/promo.json';
+var PROMO_JSON_URL = 'https://raw.githubusercontent.com/missias123/itapolitanacajuru-teste/main/dados/promo.json?t=' + Date.now();
 var _cdInterval = null;
 
 // ── CARREGAR PROMOÇÃO ────────────────────────────────────────────────────────
@@ -211,7 +209,7 @@ async function carregarPromo() {
 
   // 1. Tentar buscar do GitHub raw (sempre fresco)
   try {
-    var resp = await fetch(PROMO_JSON_URL + '?t=' + Date.now());
+    var resp = await fetch(PROMO_JSON_URL);
     if (resp.ok) {
       d = await resp.json();
       // Salvar cache local como fallback
