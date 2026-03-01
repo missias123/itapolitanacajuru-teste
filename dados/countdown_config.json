@@ -1,0 +1,72 @@
+{
+  "ativo": true,
+  "titulo": "🎉 SORTEIO IMPERDÍVEL!",
+  "descricao": "Faltam apenas",
+  "dataProximoSorteio": "2026-04-01",
+  "horaProximoSorteio": "23:59",
+  "textoAposSorteio": "Próximo sorteio em breve!",
+  "sorteios": [
+    {
+      "mes": "Março",
+      "data": "2026-03-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Abril",
+      "data": "2026-04-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Maio",
+      "data": "2026-05-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Junho",
+      "data": "2026-06-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Julho",
+      "data": "2026-07-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Agosto",
+      "data": "2026-08-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Setembro",
+      "data": "2026-09-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Outubro",
+      "data": "2026-10-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Novembro",
+      "data": "2026-11-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    },
+    {
+      "mes": "Dezembro",
+      "data": "2026-12-01",
+      "hora": "23:59",
+      "premio": "1 caixa de 5L"
+    }
+  ],
+  "dataFimPromoção": "2026-12-31",
+  "horaFimPromoção": "23:59"
+}

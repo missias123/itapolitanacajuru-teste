@@ -1,10 +1,38 @@
 {
   "ativo": true,
-  "titulo": "🎉 SORTEIO IMPERDÍVEL!",
-  "descricao": "Açaí Natureon 10L! Siga @sorveteriaitapolitanacajuru, marque 3 amigos e responda: qual o melhor açaí cremoso?",
-  "fotoUrl": "https://raw.githubusercontent.com/missias123/itapolitanacajuru/main/dados/promo_banner.jpg",
-  "btnTexto": "📸 Ver no Instagram",
-  "link": "https://www.instagram.com/p/DUKbpl7jXWp/",
-  "dataFim": "2026-02-28",
-  "horaFim": "23:59"
+  "titulo": "Sorteio de 10 Caixas de Sorvete de 5 Litros! 🍨🎉",
+  "descricao": "",
+  "fotoUrl": "https://raw.githubusercontent.com/missias123/itapolitanacajuru/main/imagens/promo_10_caixas_sorvete.jpg",
+  "btnTexto": "📸 Participar no Instagram! 🍦",
+  "link": "https://www.instagram.com/p/DVUhhwSCby4/",
+  "dataInicio": "2026-02-28",
+  "dataFim": "2026-04-01",
+  "proximoSorteio": "2026-04-01",
+  "horaSorteio": "23:59",
+  "botoes": [
+    {
+      "nome": "📸 Participar no Instagram!",
+      "link": "https://www.instagram.com/p/DVUhhwSCby4/",
+      "cor": "primary"
+    },
+    {
+      "nome": "DETALHES DA PROMOÇÃO",
+      "link": "#detalhes",
+      "cor": "secondary"
+    },
+    {
+      "nome": "REGRAS OFICIAIS",
+      "link": "#regulamento",
+      "cor": "secondary"
+    },
+    {
+      "nome": "← Voltar ao Site",
+      "link": "index.html",
+      "cor": "tertiary"
+    }
+  ],
+  "regulamento": {
+    "titulo": "REGULAMENTO OFICIAL DA PROMOÇÃO",
+    "conteudo": "📜 REGULAMENTO OFICIAL DA PROMOÇÃO\n“PROMOÇÃO SORVETERIA ITAPOLITANA CAJURU”\n1. PROMOTORA\nA promoção é realizada pela Sorveteria Itapolitana Cajuru, com sede em Cajuru/SP, doravante denominada PROMOTORA.\n2. PERÍODO DA PROMOÇÃO\nA promoção é válida do início da divulgação até 31 de dezembro, com sorteios mensais realizados todo dia 01, conforme regras deste regulamento.\n3. QUEM PODE PARTICIPAR\nPoderão participar pessoas físicas que atendam TODOS os requisitos abaixo:\nTer 18 anos ou mais;\nPossuir perfil válido e público no Instagram;\nResidir no Brasil;\nCumprir integralmente as regras desta promoção.\n❌ Não poderão participar:\nFuncionários da promotora;\nPerfis comerciais, empresariais ou falsos;\nPerfis privados ou que não cumprirem as regras.\n4. COMO PARTICIPAR\nPara participar do sorteio mensal, o interessado deverá, a cada mês:\nSeguir o perfil @sorveteriaitapolitanacajuru no Instagram;\nDigitar a palavra PROMO na publicação oficial da promoção;\nRealizar o cadastro mensal, quando solicitado pela promotora;\nManter o perfil público até a data do sorteio.\n⚠️ O cadastro não é cumulativo: é necessário participar novamente a cada mês.\n5. DO PRÊMIO\nSerão sorteadas 10 (dez) caixas de sorvete de 5 litros, sendo:\n01 (uma) caixa sorteada por mês, até o final do ano.\n🎁 O sabor será definido conforme disponibilidade da loja.\n6. SORTEIO E DIVULGAÇÃO\nO sorteio será realizado todo dia 01 de cada mês;\nO ganhador será divulgado no Instagram oficial da promotora;\nA promotora poderá utilizar ferramentas digitais ou sorteio eletrônico.\n7. ENTREGA DO PRÊMIO\nO ganhador deverá entrar em contato via Direct no Instagram;\nA retirada do prêmio deverá ocorrer presencialmente na unidade Itapolitana Cajuru;\nO prêmio não poderá ser convertido em dinheiro.\n8. DESCLASSIFICAÇÃO\nSerá desclassificado o participante que:\nDescumprir qualquer regra deste regulamento;\nUtilizar meios fraudulentos;\nNão responder ao contato da promotora no prazo informado.\n9. USO DE IMAGEM\nAo participar, o ganhador autoriza, gratuitamente, o uso de seu nome e imagem para divulgação do resultado da promoção, em mídias digitais da promotora.\n10. DISPOSIÇÕES GERAIS\nEsta promoção não é patrocinada, administrada ou associada ao Instagram;\nA participação implica aceitação total deste regulamento;\nCasos omissos serão resolvidos pela promotora.\n📍 Sorveteria Itapolitana Cajuru – Cajuru/SP\n🍨 Promoção válida até o fim do ano."
+  }
 }
