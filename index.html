@@ -508,7 +508,7 @@ img{max-width:100%;display:block}
     </div>
     <nav class="header-nav">
       <a href="encomendas.html" class="nav-btn nav-purple">🛒 Encomendas</a>
-      <a href="promocao.html" class="nav-btn nav-orange" id="nav-promo-btn">🎉 Promoção</a>
+      <a href="promocao-nova.html" class="nav-btn nav-orange" id="nav-promo-btn">🎉 Promoção</a>
       <a href="https://www.google.com/maps/place/Sorveteria+A%C3%A7aiteria+Itapolitana+Cajuru/@-21.2776766,-47.3071817" target="_blank" rel="noopener noreferrer" class="nav-btn nav-yellow" rel="noopener noreferrer">⭐ Avalie</a>
     </nav>
   </div>
@@ -1134,7 +1134,7 @@ async function carregarPromo(){
 }
 async function abrirLinkPromo(){
   const d=await _buscarDadosPromo();
-  const url=d.link||'/promocao.html';
+  const url=d.link||'/promocao-nova.html';
   window.open(url,'_blank');
 }
 async function abrirPromo(){await carregarPromo();abrirModal('promo-overlay');iniciarTimer();}
@@ -1550,7 +1550,7 @@ document.addEventListener('DOMContentLoaded',()=>{
 <!-- LOGO FIXA CENTRAL -->
 <!-- BOTAO ADMIN FLUTUANTE -->
 <a id="admin-fab" href="/gerenciar/" title="Área Administrativa">⚙ Admin</a>
-<a id="promo-fab" href="promocao.html" title="Ver Promoção do Mês">
+<a id="promo-fab" href="promocao-nova.html" title="Ver Promoção do Mês">
   <div id="promo-fab-inner">
     <div id="promo-fab-txt">
       <span id="promo-fab-label">🎉 SORTEIO!</span>
