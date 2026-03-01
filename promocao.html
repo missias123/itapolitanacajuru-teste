@@ -208,14 +208,21 @@ async function carregarPromo() {
   var d = null;
 
   // 1. Tentar buscar do GitHub raw (sempre fresco)
+  console.log('Buscando promo de:', PROMO_JSON_URL);
   try {
     var resp = await fetch(PROMO_JSON_URL);
+    console.log('Resposta fetch:', resp.status, resp.statusText);
     if (resp.ok) {
       d = await resp.json();
+      console.log('Dados carregados:', d);
       // Salvar cache local como fallback
       try { localStorage.setItem('itap_promo_cache', JSON.stringify(d)); } catch(e) {}
+    } else {
+      console.error('Erro ao carregar JSON:', resp.status);
     }
-  } catch(e) {}
+  } catch(e) {
+    console.error('Exceção no fetch:', e);
+  }
 
   // 2. Fallback: cache local
   if (!d) {
